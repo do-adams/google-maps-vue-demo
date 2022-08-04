@@ -3,7 +3,7 @@
     ref="addressField"
     :id="id"
     :required="required"
-    autocomplete="off"
+    browser-autocomplete="off"
     :label="label"
     v-model="address"
   />
