@@ -78,6 +78,8 @@ export default defineComponent({
 
       // Clear the default placeholder value "Enter a location" added to the input by the Google Maps library
       inputElem.placeholder = ''
+
+      inputElem.focus()
     }
 
     const updateAddress = () => {
