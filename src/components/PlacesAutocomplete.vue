@@ -127,7 +127,7 @@ export default defineComponent({
           address.value = usAddress
       }
 
-      emit('address', usAddress)
+      emit('address', address.value)
       emit('place', place)
     }
 
