@@ -33,7 +33,7 @@
               <VTextField label="Zip or Postal code*" v-model="postal" />
             </VFlex>
             <VFlex xs12>
-              <VBtn @click="updateGeocoder">Submit</VBtn>
+              <VBtn type="submit" @click="updateGeocoder">Submit</VBtn>
               <VBtn @click="clearForm">Clear</VBtn>
             </VFlex>
           </VLayout>

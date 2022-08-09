@@ -91,40 +91,43 @@ export default defineComponent({
       let jpAddress = ''
       let country = ''
 
-      for (const component of place.address_components ?? []) {
-        const componentType = component.types[0]
+      // Update matched address with address components
+      if (place.address_components) {
+        for (const component of place.address_components) {
+          const componentType = component.types[0]
 
-        switch (componentType) {
-          case 'street_number':
-            usAddress = `${component.long_name} ${usAddress}`
+          switch (componentType) {
+            case 'street_number':
+              usAddress = `${component.long_name} ${usAddress}`
+              break
+            case 'route':
+              usAddress += component.short_name
+              break
+            case 'premise':
+              jpAddress += ' ' + component.long_name
+              break
+            case 'sublocality_level_2':
+              jpAddress += ' ' + component.long_name
+              break
+            case 'sublocality_level_1':
+              jpAddress += ' ' + component.long_name
+              break
+            case 'country':
+              country = component.short_name
+              break
+          }
+        }
+
+        switch (country) {
+          case 'US':
+            address.value = usAddress
             break
-          case 'route':
-            usAddress += component.short_name
+          case 'JP':
+            address.value = jpAddress
             break
-          case 'premise':
-            jpAddress += ' ' + component.long_name
-            break
-          case 'sublocality_level_2':
-            jpAddress += ' ' + component.long_name
-            break
-          case 'sublocality_level_1':
-            jpAddress += ' ' + component.long_name
-            break
-          case 'country':
-            country = component.short_name
+          default:
             break
         }
-      }
-
-      switch (country) {
-        case 'US':
-          address.value = usAddress
-          break
-        case 'JP':
-          address.value = jpAddress
-          break
-        default:
-          address.value = usAddress
       }
 
       emit('address', address.value)
