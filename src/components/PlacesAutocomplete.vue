@@ -70,7 +70,7 @@ export default defineComponent({
 
       autocomplete = new google.maps.places.Autocomplete(inputElem, {
         // componentRestrictions: { country: ['us', 'ca'] },
-        fields: ['address_components', 'geometry', 'formatted_address'],
+        fields: ['address_components', 'geometry', 'formatted_address'], // formatted_address is optional
         types: ['address'],
       })
 
@@ -86,24 +86,48 @@ export default defineComponent({
       if (!autocomplete) throw new Error('Error updating the address field')
 
       const place = autocomplete.getPlace()
-      let newAddress = ''
+
+      let usAddress = ''
+      let jpAddress = ''
+      let country = ''
 
       for (const component of place.address_components ?? []) {
         const componentType = component.types[0]
 
         switch (componentType) {
           case 'street_number':
-            newAddress = `${component.long_name} ${newAddress}`
+            usAddress = `${component.long_name} ${usAddress}`
             break
           case 'route':
-            newAddress += component.short_name
+            usAddress += component.short_name
+            break
+          case 'premise':
+            jpAddress += ' ' + component.long_name
+            break
+          case 'sublocality_level_2':
+            jpAddress += ' ' + component.long_name
+            break
+          case 'sublocality_level_1':
+            jpAddress += ' ' + component.long_name
+            break
+          case 'country':
+            country = component.short_name
             break
         }
       }
 
-      address.value = newAddress
+      switch (country) {
+        case 'US':
+          address.value = usAddress
+          break
+        case 'JP':
+          address.value = jpAddress
+          break
+        default:
+          address.value = usAddress
+      }
 
-      emit('address', newAddress)
+      emit('address', usAddress)
       emit('place', place)
     }
 
