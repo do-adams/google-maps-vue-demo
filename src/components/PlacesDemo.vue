@@ -152,10 +152,7 @@ export default defineComponent({
         {
           address: readableAddress,
         },
-        function (results, status) {
-          console.log(results)
-          geocoder.value = results
-        }
+        (results, status) => (geocoder.value = results)
       )
     }
 
